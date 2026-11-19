@@ -101,10 +101,10 @@ section{position:relative}
 .face{position:relative;flex:1;min-width:0;border:1px solid var(--line);background:var(--card);overflow:hidden;text-align:left;padding:0;transition:flex .7s var(--ease),border-color .3s;display:block}
 .face[aria-expanded="true"]{flex:3.4;border-color:var(--aco)}
 .face:hover{border-color:var(--aco)}
-.face .art{position:absolute;inset:0;background:var(--paper);display:grid;place-items:center;transition:opacity .5s}
-.face .art img{width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply;filter:grayscale(1) contrast(1.05);transition:transform 1.2s var(--ease)}
-.face[aria-expanded="true"] .art img{transform:scale(1.03)}
-.face .art svg{width:56%;height:auto;color:var(--paper-ink)}
+.face .art{position:absolute;inset:0;background:#F1F1EF;overflow:hidden}
+.face .art img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;object-position:50% 0;mix-blend-mode:multiply;filter:grayscale(1) contrast(1.05)}
+.face[aria-expanded="true"] .art img{object-fit:contain;object-position:50% 50%;height:calc(100% - 104px);top:10px}
+.face .art svg{position:absolute;left:50%;top:42%;translate:-50% -50%;width:34%;max-width:130px;height:auto;color:#0A0A0A}
 .face .lab{position:absolute;left:0;right:0;bottom:0;padding:70px 24px 24px;background:linear-gradient(to top,rgba(10,10,10,.97) 45%,rgba(10,10,10,.8) 70%,transparent);color:#E7E7E5}
 .face .lab h3{display:flex;align-items:baseline;gap:12px}
 .face .lab h3 small{font-family:var(--body);font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--aco)}
@@ -118,7 +118,7 @@ section{position:relative}
   .face{flex:none;height:92px;transition:height .6s var(--ease)}
   .face[aria-expanded="true"]{height:440px;flex:none}
   .face:not([aria-expanded="true"]) .lab h3{writing-mode:horizontal-tb;transform:none;position:static}
-  .face:not([aria-expanded="true"]) .lab{height:auto;top:0;display:flex;align-items:center;background:rgba(10,10,10,.55)}
+  .face:not([aria-expanded="true"]) .lab{height:auto;top:0;display:flex;align-items:center;background:rgba(10,10,10,.82)}
 }
 
 /* RAZAO x EMOCAO */
@@ -128,7 +128,7 @@ section{position:relative}
 .side{display:flex;flex-direction:column;align-items:center;gap:16px;transition:opacity .4s,transform .5s var(--ease);will-change:transform}
 .side .ico{width:min(180px,36vw);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);overflow:hidden;background:var(--carbono)}
 .side .ico img{width:100%;height:100%;object-fit:cover;filter:grayscale(1)}
-.side .ico svg{width:78%;color:#E7E7E5}
+.side .ico svg{width:62%;height:auto;display:block;color:#E7E7E5}
 .side h3{font-size:1.5rem}
 .side p{color:var(--muted);max-width:28ch;font-size:.97rem}
 .beam{width:100%;height:auto;color:var(--fg)}
@@ -185,10 +185,13 @@ section{position:relative}
 .col h3{margin-top:12px}
 .col .gr{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:#494949}
 .col p{font-size:.95rem;color:#494949;max-width:24ch}
-.ideals{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,3vw,40px);margin-top:clamp(40px,7vh,76px);padding-top:30px;border-top:1px solid rgba(10,10,10,.2)}
-.ideals div{display:grid;gap:6px}
-.ideals b{font-family:var(--display);font-weight:400;font-size:1.5rem}
-.ideals span{font-size:.95rem;color:#494949}
+.ideals{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,3vw,40px);margin-top:clamp(40px,7vh,76px);align-items:start}
+.ideal{background:none;border:0;border-top:1px solid rgba(10,10,10,.25);padding:22px 0 8px;text-align:left;color:var(--paper-ink);position:relative;transition:border-color .3s}
+.ideal::before{content:"";position:absolute;left:0;top:-1px;height:1px;width:100%;background:var(--paper-ink);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.ideal:hover::before,.ideal[aria-expanded="true"]::before{transform:scaleX(1)}
+.ideal b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(1.5rem,2.6vw,2.1rem)}
+.ideal span{display:block;font-size:.95rem;color:#494949;max-height:0;opacity:0;overflow:hidden;transition:max-height .5s var(--ease),opacity .4s,margin .4s}
+.ideal[aria-expanded="true"] span{max-height:70px;opacity:1;margin-top:8px}
 @media(max-width:820px){.cols{grid-template-columns:repeat(2,1fr);row-gap:44px}.ideals{grid-template-columns:1fr}}
 
 /* INSIGNIAS */
@@ -321,7 +324,7 @@ footer .logo{width:120px;aspect-ratio:1180/540;--m:url(data:image/png;base64,iVB
       <h2>Entre a águia e o capacete.</h2>
       <div class="bal">
         <div class="side" id="eagle">
-          <div class="ico"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M50 82 C50 60 50 44 50 26"/><path d="M50 30 C34 34 20 26 6 10 M50 40 C36 46 22 40 10 28 M50 50 C38 56 26 52 16 44 M50 60 C40 66 30 64 22 58"/><path d="M50 30 C66 34 80 26 94 10 M50 40 C64 46 78 40 90 28 M50 50 C62 56 74 52 84 44 M50 60 C60 66 70 64 78 58"/><circle cx="50" cy="20" r="4"/></svg></div>
+          <div class="ico"><svg viewBox="0 6 100 88" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M50 82 C50 60 50 44 50 26"/><path d="M50 30 C34 34 20 26 6 10 M50 40 C36 46 22 40 10 28 M50 50 C38 56 26 52 16 44 M50 60 C40 66 30 64 22 58"/><path d="M50 30 C66 34 80 26 94 10 M50 40 C64 46 78 40 90 28 M50 50 C62 56 74 52 84 44 M50 60 C60 66 70 64 78 58"/><circle cx="50" cy="20" r="4"/></svg></div>
           <h3>A águia</h3>
         </div>
         <div class="mid">
@@ -373,10 +376,10 @@ footer .logo{width:120px;aspect-ratio:1180/540;--m:url(data:image/png;base64,iVB
         <div class="col"><div class="shaft"></div><h3>Temperança</h3><span class="gr">Sophrosýne</span></div>
         <div class="col"><div class="shaft"></div><h3>Justiça</h3><span class="gr">Dikaiosýne</span></div>
       </div>
-      <div class="ideals">
-        <div><b>Areté</b></div>
-        <div><b>Eudaimonia</b></div>
-        <div><b>Kalokagathia</b></div>
+      <div class="ideals" id="ideals">
+        <button class="ideal" aria-expanded="false"><b>Areté</b><span>Excelência</span></button>
+        <button class="ideal" aria-expanded="false"><b>Eudaimonia</b><span>Vida plena</span></button>
+        <button class="ideal" aria-expanded="false"><b>Kalokagathia</b><span>Corpo, mente e caráter em harmonia</span></button>
       </div>
     </div>
   </section>
@@ -469,9 +472,11 @@ footer .logo{width:120px;aspect-ratio:1180/540;--m:url(data:image/png;base64,iVB
   var faces=[].slice.call(document.querySelectorAll('.face'));
   function pick(f){faces.forEach(function(x){x.setAttribute('aria-expanded',x===f?'true':'false')})}
   faces.forEach(function(f){
-    f.addEventListener('click',function(){pick(f)});
+    f.addEventListener('click',function(){var open=f.getAttribute('aria-expanded')==='true';pick(open?null:f)});
     f.addEventListener('mouseenter',function(){if(matchMedia('(hover:hover) and (min-width:821px)').matches)pick(f)});
   });
+
+  [].forEach.call(document.querySelectorAll('.ideal'),function(b){b.addEventListener('click',function(){b.setAttribute('aria-expanded',b.getAttribute('aria-expanded')==='true'?'false':'true')})});
 
   /* balança */
   var range=$('#range'),arm=$('#arm'),eagle=$('#eagle'),helm=$('#helm'),v=$('#verdict');
