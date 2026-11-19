@@ -433,8 +433,7 @@ footer .logo{color:var(--fg);width:120px;aspect-ratio:1180/540;--m:url(data:imag
   /* tema */
   var root=document.documentElement;
   $('#theme').addEventListener('click',function(){
-    var dark=root.dataset.theme?root.dataset.theme==='dark':!matchMedia('(prefers-color-scheme: light)').matches;
-    root.dataset.theme=dark?'light':'dark';
+    root.dataset.theme=(root.dataset.theme||'dark')==='dark'?'light':'dark';
   });
 
   /* nav */
