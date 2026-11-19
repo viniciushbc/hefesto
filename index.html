@@ -228,7 +228,7 @@ footer .logo{color:var(--fg);width:120px;aspect-ratio:1180/540;--m:url(data:imag
       <li><a href="#ferreiro">O ferreiro</a></li>
       <li><a href="#faces">Os homens</a></li>
       <li><a href="#temperanca">Equilíbrio</a></li>
-      <li><a href="#insignias">Insígnias</a></li>
+      <li><a href="#produtos">Produtos</a></li>
     </ul>
     <div class="tools">
       <button class="ibtn sq" id="theme" aria-label="Alternar tema claro e escuro"><span aria-hidden="true">◐</span></button>
@@ -247,7 +247,7 @@ footer .logo{color:var(--fg);width:120px;aspect-ratio:1180/540;--m:url(data:imag
       <p class="sub">Joalheria masculina. Cada peça, uma insígnia pessoal.</p>
       <div class="cta">
         <a class="btn pri" href="#ferreiro">Conhecer o Hefesto</a>
-        <a class="btn ghost" href="#insignias">Ver as insígnias</a>
+        <a class="btn ghost" href="#produtos">Ver os produtos</a>
       </div>
     </div>
     <span class="scroll-cue" aria-hidden="true"></span>
@@ -336,10 +336,10 @@ footer .logo{color:var(--fg);width:120px;aspect-ratio:1180/540;--m:url(data:imag
     </div>
   </section>
 
-  <section class="sec pieces" id="insignias">
+  <section class="sec pieces" id="produtos">
     <div class="wrap">
       <div class="head">
-        <div><div class="eyebrow">Insígnias</div><h2 style="margin-top:14px">Peças que ele leva consigo.</h2></div>
+        <div><div class="eyebrow">Produtos</div><h2 style="margin-top:14px">Peças que ele leva consigo.</h2></div>
         
       </div>
       <div class="grid" id="grid"></div>
@@ -454,7 +454,7 @@ footer .logo{color:var(--fg);width:120px;aspect-ratio:1180/540;--m:url(data:imag
   var list=$('#sel'),cnt=$('#count');
   function render(){
     var ids=Object.keys(sel);cnt.textContent=ids.length;
-    list.innerHTML=ids.length?ids.map(function(id){var p=items.filter(function(x){return x.id===id})[0];return '<li><img src="'+p.i+'" alt=""><span>'+p.n+'</span><button data-rm="'+id+'">Remover</button></li>'}).join(''):'<li class="empty">Nenhuma peça ainda. Adicione insígnias para montar a sua seleção.</li>';
+    list.innerHTML=ids.length?ids.map(function(id){var p=items.filter(function(x){return x.id===id})[0];return '<li><img src="'+p.i+'" alt=""><span>'+p.n+'</span><button data-rm="'+id+'">Remover</button></li>'}).join(''):'<li class="empty">Nenhuma peça ainda. Adicione produtos para montar a sua seleção.</li>';
     [].forEach.call(document.querySelectorAll('.add'),function(b){var on=!!sel[b.dataset.id];b.setAttribute('aria-pressed',on);b.textContent=on?'Na seleção':'Adicionar'});
   }
   grid.addEventListener('click',function(e){var b=e.target.closest('.add');if(!b)return;var id=b.dataset.id;if(sel[id])delete sel[id];else sel[id]=1;render()});
