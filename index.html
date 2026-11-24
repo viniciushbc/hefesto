@@ -174,10 +174,10 @@ section{position:relative}
 .look{padding-block:clamp(56px,9vh,110px);background:var(--bg2)}
 .lookhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
 .arrows{display:flex;gap:10px}
-.rail{display:flex;gap:clamp(10px,1.4vw,18px);overflow-x:auto;scroll-snap-type:x proximity;padding-inline:var(--gut);scrollbar-width:none;cursor:grab;-webkit-overflow-scrolling:touch}
+.rail{position:relative;display:flex;gap:clamp(10px,1.4vw,18px);overflow-x:auto;padding-inline:var(--gut);scrollbar-width:none;cursor:grab;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 .rail::-webkit-scrollbar{display:none}
-.rail.drag{cursor:grabbing;scroll-snap-type:none}
-.rail img{flex:none;height:min(72svh,640px);width:auto;max-width:none;scroll-snap-align:center;object-fit:cover;background:var(--carbono);user-select:none;-webkit-user-select:none}
+.rail.drag{cursor:grabbing}
+.rail img{flex:none;height:min(72svh,640px);width:auto;max-width:none;object-fit:cover;background:var(--carbono);user-select:none;-webkit-user-select:none}
 @media(max-width:560px){.rail img{height:62svh}}
 
 /* PRODUTOS */
@@ -462,13 +462,35 @@ footer .logo{color:var(--fg);width:170px;aspect-ratio:746/261;--m:url(data:image
 
   [].forEach.call(document.querySelectorAll('.ideal'),function(b){b.addEventListener('click',function(){b.setAttribute('aria-expanded',b.getAttribute('aria-expanded')==='true'?'false':'true')})});
 
-  /* editorial: arrastar e setas */
+  /* editorial: carrossel infinito (arrastar, setas, teclado) */
   (function(){
-    var r=$('#rail'),d=false,sx=0,sl=0,moved=0;
-    r.addEventListener('pointerdown',function(e){if(e.pointerType==='touch')return;d=true;moved=0;sx=e.clientX;sl=r.scrollLeft;r.classList.add('drag');r.setPointerCapture(e.pointerId)});
-    r.addEventListener('pointermove',function(e){if(!d)return;moved=e.clientX-sx;r.scrollLeft=sl-moved});
-    ['pointerup','pointercancel'].forEach(function(n){r.addEventListener(n,function(){d=false;r.classList.remove('drag')})});
-    function go(k){r.scrollBy({left:k*Math.min(r.clientWidth*.8,720),behavior:RM?'auto':'smooth'})}
+    var r=$('#rail'),orig=[].slice.call(r.children);
+    function clone(el){var c=el.cloneNode(true);c.setAttribute('alt','');c.setAttribute('aria-hidden','true');c.removeAttribute('loading');return c}
+    var before=document.createDocumentFragment(),after=document.createDocumentFragment();
+    orig.forEach(function(el){before.appendChild(clone(el));after.appendChild(clone(el))});
+    r.insertBefore(before,r.firstChild);r.appendChild(after);
+    var setW=0,start0=0,t=null,d=false,lx=0;
+    function measure(){
+      var pad=parseFloat(getComputedStyle(r).paddingLeft)||0;
+      setW=orig[orig.length-1].offsetLeft+orig[orig.length-1].offsetWidth-orig[0].offsetLeft+parseFloat(getComputedStyle(r).columnGap||0);
+      start0=orig[0].offsetLeft-pad;
+    }
+    function wrap(){
+      if(!setW)return;
+      if(r.scrollLeft<start0-setW*.5)r.scrollLeft+=setW;
+      else if(r.scrollLeft>start0+setW*.5)r.scrollLeft-=setW;
+    }
+    function init(){measure();r.scrollLeft=start0}
+    init();addEventListener('load',function(){var p=r.scrollLeft-start0;measure();r.scrollLeft=start0+p});
+    addEventListener('resize',function(){var p=r.scrollLeft-start0;measure();r.scrollLeft=start0+p});
+    r.addEventListener('scroll',function(){
+      if(Math.abs(r.scrollLeft-start0)>setW*.95)wrap();
+      clearTimeout(t);if(!d)t=setTimeout(wrap,90);
+    },{passive:true});
+    r.addEventListener('pointerdown',function(e){if(e.pointerType==='touch')return;d=true;lx=e.clientX;r.classList.add('drag');r.setPointerCapture(e.pointerId)});
+    r.addEventListener('pointermove',function(e){if(!d)return;r.scrollLeft-=e.clientX-lx;lx=e.clientX});
+    ['pointerup','pointercancel'].forEach(function(n){r.addEventListener(n,function(){d=false;r.classList.remove('drag');wrap()})});
+    function go(k){wrap();r.scrollBy({left:k*Math.min(r.clientWidth*.8,720),behavior:RM?'auto':'smooth'})}
     $('#lprev').addEventListener('click',function(){go(-1)});$('#lnext').addEventListener('click',function(){go(1)});
     r.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){go(1);e.preventDefault()}if(e.key==='ArrowLeft'){go(-1);e.preventDefault()}});
   })();
