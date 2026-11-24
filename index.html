@@ -170,7 +170,9 @@ section{position:relative}
 .pieces .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,2vw,26px)}
 .piece{position:relative;display:flex;flex-direction:column;gap:14px}
 .piece .ph{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--carbono)}
-.piece .ph img{width:100%;height:100%;object-fit:cover;transition:transform 1.1s var(--ease)}
+.piece .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.1s var(--ease),opacity .7s var(--ease)}
+.piece .ph img.alt{opacity:0}
+.piece:hover .ph img.alt,.piece:focus-within .ph img.alt{opacity:1}
 .piece:hover .ph img{transform:scale(1.03)}
 .piece .meta{display:flex;justify-content:space-between;align-items:start;gap:12px}
 .piece h3{font-size:1.35rem}
@@ -443,16 +445,17 @@ footer .logo{color:var(--fg);width:120px;aspect-ratio:1180/540;--m:url(data:imag
 
   /* insígnias + seleção */
   var items=[
-    {id:'atlas',n:'Anel Atlas',f:'Atlas',i:'img/sinetes.jpg',a:'Sinetes com figuras gravadas sobre pedra'},
-    {id:'moeda',n:'Moeda Hefesto',f:'A moeda',i:'img/moeda-pedra.jpg',a:'Pingente de moeda sobre bloco de pedra'},
-    {id:'zeus',n:'Selo Zeus',f:'Zeus',i:'img/anel-ouro.jpg',a:'Anel escultural sobre pedestal de pedra'},
-    {id:'sisifo',n:'Aliança Sísifo',f:'Sísifo',i:'img/aneis-pedra.jpg',a:'Anéis sobre rocha clara'},
-    {id:'temp',n:'Abotoaduras Temperança',f:'Equilíbrio',i:'img/abotoadura.jpg',a:'Abotoadura em punho de camisa'},
-    {id:'meandro',n:'Anel Meandro',f:'Os meandros',i:'img/prata-pedra.jpg',a:'Anéis de prata sobre rocha'}
+    {id:'gaviao',n:'Abotoadura Gavião',f:'Abotoadura',i:'img/p-gaviao.jpg',p:'62% 40%',i2:'img/p-gaviao2.jpg',p2:'50% 40%',a:'Abotoadura de moeda no punho de uma camisa branca'},
+    {id:'pingente',n:'Pingente Moeda',f:'Pingente',i:'img/p-pingente.jpg',p:'50% 50%',i2:'img/p-pingente2.jpg',p2:'55% 60%',a:'Pingente de moeda segurado sobre a camisa'},
+    {id:'moeda',n:'Moeda Meandro',f:'Linha Meandro',i:'img/p-moeda.jpg',p:'43% 55%',i2:'img/p-moeda2.jpg',p2:'22% 50%',a:'Moeda de prata com borda de meandro entre colunas de gesso'},
+    {id:'anel',n:'Anel Meandro',f:'Linha Meandro',i:'img/p-anel.jpg',p:'58% 40%',i2:'img/p-anel2.jpg',p2:'50% 40%',a:'Anel de prata com meandro sobre capitel de gesso'},
+    {id:'brinco',n:'Brinco Argola Meandro',f:'Linha Meandro',i:'img/p-brinco.jpg',p:'50% 35%',i2:'img/p-brinco2.jpg',p2:'50% 30%',a:'Brinco argola de prata na orelha, retrato em preto e branco'},
+    {id:'atlas',n:'Anel Atlas',f:'Atlas',i:'img/p-atlas.jpg',p:'45% 40%',i2:'img/p-atlas2.jpg',p2:'50% 70%',a:'Anel de prata aos pés da estatueta de Atlas com o globo'}
   ];
+
   var sel={};
   var grid=$('#grid');
-  grid.innerHTML=items.map(function(p){return '<article class="piece"><div class="ph"><img loading="lazy" src="'+p.i+'" alt="'+p.a+'"></div><div class="meta"><div><h3>'+p.n+'</h3><div class="face-tag">'+p.f+'</div></div><button class="add" data-id="'+p.id+'" aria-pressed="false">Adicionar</button></div></article>'}).join('');
+  grid.innerHTML=items.map(function(p){return '<article class="piece"><div class="ph"><img loading="lazy" src="'+p.i+'" alt="'+p.a+'" style="object-position:'+p.p+'"><img class="alt" loading="lazy" src="'+p.i2+'" alt="" style="object-position:'+p.p2+'"></div><div class="meta"><div><h3>'+p.n+'</h3><div class="face-tag">'+p.f+'</div></div><button class="add" data-id="'+p.id+'" aria-pressed="false">Adicionar</button></div></article>'}).join('');
   var list=$('#sel'),cnt=$('#count');
   function render(){
     var ids=Object.keys(sel);cnt.textContent=ids.length;
